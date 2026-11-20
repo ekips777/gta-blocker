@@ -278,10 +278,20 @@
     return false;
   }
 
+  // 白名单：这些网站完全不屏蔽，GTA 内容照常显示（支持域名后缀匹配，如 tieba.baidu.com 覆盖其所有子页）
+  function isWhitelisted() {
+    const host = location.hostname;
+    return (cfg.whitelist || []).some(w => host === w || host.endsWith("." + w));
+  }
+
   // ---------- 扫描 ----------
   function scan() {
     if (!cfg || !cfg.enabled || sessionPaused) return;
     if ((cfg.disabledHosts || []).includes(location.hostname)) return;
+    if (isWhitelisted()) {
+      unhideAll(); // 白名单站点：还原所有被隐藏的内容
+      return;
+    }
     if (isTypingKeyword()) return;
     // 整页遮挡在主动搜索页跳过（搜索框/页面框架不能没），结果条目照常拦截
     if (!isSelfSearch()) checkPage();
@@ -469,10 +479,10 @@
   });
 
   // ---------- 初始化 ----------
+  const ALL_DEFAULTS = { enabled: true, keywords: DEFAULT_KEYWORDS, customSelectors: [], looseMode: false, strictMode: false, textMode: true, conservativeMode: false, disabledHosts: [], whitelist: [] };
+
   function init() {
-    chrome.storage.sync.get(
-      { enabled: true, keywords: DEFAULT_KEYWORDS, customSelectors: [], looseMode: false, strictMode: false, textMode: true, conservativeMode: false, disabledHosts: [] },
-      (data) => {
+    chrome.storage.sync.get(ALL_DEFAULTS, (data) => {
         cfg = data;
         scan();
         setTimeout(scan, 1200);
@@ -486,14 +496,11 @@
         // 配置变更实时生效
         chrome.storage.onChanged.addListener((changes, area) => {
           if (area !== "sync") return;
-          chrome.storage.sync.get(
-            { enabled: true, keywords: DEFAULT_KEYWORDS, customSelectors: [], looseMode: false },
-            (data) => {
-              cfg = data;
-              if (!cfg.enabled) unhideAll();
-              else scan();
-            }
-          );
+          chrome.storage.sync.get(ALL_DEFAULTS, (data) => {
+            cfg = data;
+            if (!cfg.enabled) unhideAll();
+            else scan();
+          });
         });
       }
     );

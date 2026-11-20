@@ -16,15 +16,17 @@ const DEFAULT_KEYWORDS = [
 
 const kwEl = document.getElementById("keywords");
 const selEl = document.getElementById("customSelectors");
+const wlEl = document.getElementById("whitelist");
 const looseEl = document.getElementById("looseMode");
 const savedEl = document.getElementById("saved");
 
 function load() {
   chrome.storage.sync.get(
-    { keywords: DEFAULT_KEYWORDS, customSelectors: [], looseMode: false, strictMode: false, textMode: true, conservativeMode: false },
+    { keywords: DEFAULT_KEYWORDS, customSelectors: [], whitelist: [], looseMode: false, strictMode: false, textMode: true, conservativeMode: false },
     (d) => {
       kwEl.value = d.keywords.join("\n");
       selEl.value = d.customSelectors.join("\n");
+      wlEl.value = d.whitelist.join("\n");
       looseEl.checked = d.looseMode;
       document.getElementById("strictMode").checked = d.strictMode;
       document.getElementById("textMode").checked = d.textMode;
@@ -36,9 +38,11 @@ function load() {
 function save() {
   const keywords = kwEl.value.split("\n").map(s => s.trim()).filter(Boolean);
   const customSelectors = selEl.value.split("\n").map(s => s.trim()).filter(Boolean);
+  const whitelist = wlEl.value.split("\n").map(s => s.trim().toLowerCase()).filter(Boolean);
   chrome.storage.sync.set({
     keywords,
     customSelectors,
+    whitelist,
     looseMode: looseEl.checked,
     strictMode: document.getElementById("strictMode").checked,
     textMode: document.getElementById("textMode").checked,

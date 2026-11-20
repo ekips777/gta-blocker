@@ -32,7 +32,8 @@ chrome.runtime.onInstalled.addListener(() => {
         strictMode: false,
         textMode: true,
         conservativeMode: false,
-        disabledHosts: []
+        disabledHosts: [],
+        whitelist: []
       });
     }
   });

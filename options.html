@@ -68,6 +68,13 @@
     纯文本模式对贴吧新版首页、冷门网站等结构未知页面最有效——只要 F12 里能搜到的文字，它都能拦。
   </div>
 
+  <h2>白名单网站（每行一个域名，这些网站<b>完全不屏蔽</b>，GTA 内容照常显示）</h2>
+  <textarea id="whitelist" spellcheck="false" placeholder="例如：&#10;tieba.baidu.com&#10;gta.fandom.com"></textarea>
+  <div class="tip">
+    填主域名即可自动覆盖其所有子域名/子页面（如填 baidu.com 则整个百度系都不屏蔽）。
+    适合「平时屏蔽，但某些站点想正常浏览」的场景。与 popup 里的「在此网站停用」效果一致，但这里是长期手动维护的列表。
+  </div>
+
   <div class="btns">
     <button id="save">保存</button>
     <button class="gray" id="reset">恢复默认关键词</button>
