@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GTA 内容屏蔽助手 - 设置</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    background: #1e1e2e; color: #eee; margin: 0; padding: 40px;
+  }
+  .wrap { max-width: 720px; margin: auto; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 15px; color: #bbb; margin-top: 28px; }
+  textarea {
+    width: 100%; min-height: 140px; box-sizing: border-box;
+    background: #2d2d3d; color: #eee; border: 1px solid #444;
+    border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.8;
+    font-family: inherit; resize: vertical;
+  }
+  label.check { display: flex; align-items: center; gap: 8px; margin: 16px 0; cursor: pointer; }
+  .tip { font-size: 12px; color: #888; line-height: 1.8; margin-top: 6px; }
+  .btns { margin-top: 24px; display: flex; gap: 12px; }
+  button {
+    background: #e74c3c; color: #fff; border: none; padding: 10px 24px;
+    border-radius: 8px; cursor: pointer; font-size: 14px;
+  }
+  button.gray { background: #4a4a5e; }
+  #saved { color: #7bed9f; font-size: 13px; opacity: 0; transition: .3s; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🚫 GTA 内容屏蔽助手 — 设置</h1>
+
+  <h2>屏蔽关键词（每行一个，匹配时不区分大小写）</h2>
+  <textarea id="keywords" spellcheck="false"></textarea>
+  <div class="tip">
+    默认已包含：GTA、侠盗猎车、R星、Rockstar、崔佛、老麦、洛圣都、罪恶都市、圣安地列斯等。
+    注意「老麦」「富兰克林」等人名可能偶尔误伤无关内容，可自行增删。
+  </div>
+
+  <h2>自定义 CSS 选择器（每行一个，作用于所有网站）</h2>
+  <textarea id="customSelectors" spellcheck="false" placeholder="例如：&#10;.my-site .post-card&#10;div[class*='video-item']"></textarea>
+  <div class="tip">
+    当某个网站改版导致内置规则失效时，可以在浏览器 F12 里找到该内容卡片的选择器填到这里。
+  </div>
+
+  <label class="check">
+    <input type="checkbox" id="looseMode">
+    宽松模式（扫描所有网站的通用卡片容器，覆盖面更广，但偶有误伤可能）
+  </label>
+
+  <label class="check">
+    <input type="checkbox" id="strictMode">
+    整页拦截模式（<b>所有网站</b>：页面标题或网址命中关键词时，直接遮挡整个页面，可一键放行）
+  </label>
+
+  <label class="check">
+    <input type="checkbox" id="textMode">
+    纯文本模式（<b>不依赖站点结构</b>：直接扫描页面所有可见文字，命中关键词即隐藏所在内容块；默认开启，误伤时可关闭）
+  </label>
+
+  <label class="check">
+    <input type="checkbox" id="conservativeMode">
+    保守模式（<b>推荐贴吧等站点开启</b>：只隐藏含关键词的最小文字块，不碰任何容器，绝不影响信息流加载新帖子；副作用是卡片里的图片等还会留着）
+  </label>
+  <div class="tip">
+    纯文本模式对贴吧新版首页、冷门网站等结构未知页面最有效——只要 F12 里能搜到的文字，它都能拦。
+  </div>
+
+  <div class="btns">
+    <button id="save">保存</button>
+    <button class="gray" id="reset">恢复默认关键词</button>
+    <button class="gray" id="clearStats">清空今日统计</button>
+    <span id="saved">✔ 已保存</span>
+  </div>
+</div>
+<script src="options.js"></script>
+</body>
+</html>

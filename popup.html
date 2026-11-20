@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  body {
+    width: 260px;
+    margin: 0;
+    padding: 16px;
+    font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    background: #1e1e2e;
+    color: #eee;
+  }
+  h1 { font-size: 15px; margin: 0 0 12px; }
+  .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .switch { position: relative; width: 44px; height: 24px; }
+  .switch input { display: none; }
+  .slider {
+    position: absolute; inset: 0; background: #555; border-radius: 12px;
+    cursor: pointer; transition: .2s;
+  }
+  .slider::before {
+    content: ""; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: .2s;
+  }
+  input:checked + .slider { background: #e74c3c; }
+  input:checked + .slider::before { transform: translateX(20px); }
+  #stats { font-size: 13px; color: #bbb; margin-bottom: 14px; }
+  #stats b { color: #ff7675; font-size: 18px; }
+  #debugList { font-size: 11px; color: #aaa; max-height: 220px; overflow-y: auto; margin: 8px 0; }
+  #debugList div { padding: 4px 6px; background: #2d2d3d; border-radius: 6px; margin-bottom: 4px; line-height: 1.5; word-break: break-all; }
+  #debugList b { color: #ff7675; }
+  a { color: #74c0fc; font-size: 13px; text-decoration: none; display: block; margin-top: 4px; }
+  .status { font-size: 12px; padding: 4px 10px; border-radius: 10px; background: #2d2d3d; }
+  .status.on { color: #7bed9f; }
+  .status.off { color: #ff7675; }
+</style>
+</head>
+<body>
+  <h1>🚫 GTA 内容屏蔽助手</h1>
+  <div class="row">
+    <span id="state">屏蔽功能</span>
+    <span class="status" id="badge">—</span>
+    <label class="switch">
+      <input type="checkbox" id="toggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div id="stats">今日已屏蔽 <b id="count">0</b> 条内容</div>
+  <a href="#" id="debug">🛠 查看本页被隐藏的元素</a>
+  <div id="debugList"></div>
+  <a href="#" id="pick" style="color:#ff9f43;">🎯 选取元素屏蔽（点击页面元素）</a>
+  <a href="#" id="restore" style="color:#7bed9f;">↩️ 恢复本页显示（页面异常时点这个）</a>
+  <a href="#" id="toggleSite">🔇 在此网站 停用/启用 屏蔽</a>
+  <a href="#" id="openOptions">⚙️ 设置关键词与规则</a>
+  <div style="font-size:11px;color:#666;margin-top:10px;text-align:center;" id="ver"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
